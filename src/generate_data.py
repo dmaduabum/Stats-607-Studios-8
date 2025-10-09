@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from scipy import stats
 
 def ar1_cov(p, rho):
@@ -20,11 +19,10 @@ def sample_X(n, p, rho, rng):
 
 def make_beta(p, rng):
     """
-    Create coefficient vector;
+    Create coefficient vector
     """
     b = rng.standard_normal(p)
     return b
-
 
 def sigma_for_SNR(X, beta, target_snr):
     """
@@ -40,6 +38,10 @@ def sample_errors(n, df, sigma, rng):
     """
     Student-t (df) errors scaled to sigma.
     """
+
+    if np.isinf(df):
+        err = rng.standard_normal(n) * sigma
+        return err
 
     t = stats.t.rvs(df, size = n, random_state=rng)
     if df > 2:
