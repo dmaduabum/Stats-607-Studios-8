@@ -30,7 +30,7 @@ def sigma_for_SNR(X, beta, target_snr):
     """
 
     s2 = np.var(X @ beta)
-    sigma2 = s2 / max(float(target_snr))
+    sigma2 = s2 / float(target_snr)
     return np.sqrt(sigma2)
 
 

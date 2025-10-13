@@ -15,7 +15,7 @@ def load_results(csv_path):
 
 def plot_mse_vs_df(df, save_path=None):
     """Plot MSE vs degrees of freedom for each method"""
-    fig, ax = plt.subplots(figsize=(5, 3))
+    fig, ax = plt.subplots(figsize=(5, 3.5))
     
     # Aggregate results
     grouped = df.groupby(['method', 'df'])['mse'].mean().reset_index()
@@ -42,129 +42,82 @@ def plot_mse_vs_df(df, save_path=None):
     plt.show()
 
 def plot_small_multiples_snr(df, save_path=None):
-    """Small multiples: MSE vs df by SNR"""
+    """Simple plot: MSE vs df by SNR (different colors/styles)"""
+    fig, ax = plt.subplots(figsize=(8, 5))
+    
     snr_values = sorted(df['SNR'].unique())
-    n_plots = len(snr_values)
-    ncols = min(3, n_plots)
-    nrows = (n_plots + ncols - 1) // ncols
-    
-    fig, axes = plt.subplots(nrows, ncols, figsize=(ncols*2, nrows*2), 
-                            sharey=True, sharex=True)
-    if n_plots == 1:
-        axes = [axes]
-    elif nrows == 1:
-        axes = axes.flatten()
-    else:
-        axes = axes.flatten()
-    
     methods = df['method'].unique()
     colors = sns.color_palette("husl", len(methods))
     
     for i, snr in enumerate(snr_values):
-        if i >= len(axes):
-            break
-            
-        ax = axes[i]
         subset = df[df['SNR'] == snr]
         grouped = subset.groupby(['method', 'df'])['mse'].mean().reset_index()
         
         for j, method in enumerate(methods):
             data = grouped[grouped['method'] == method]
+            linestyle = ['-', '--', '-.'][i % 3]  # Different line styles for SNR
             ax.plot(data['df'], data['mse'], 'o-', 
-                   color=colors[j], label=method if i == 0 else "", 
-                   linewidth=1.5, markersize=3)
-        
-        ax.set_title(f'SNR = {snr}', fontsize=10)
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.grid(True, alpha=0.3, linewidth=0.5)
+                   color=colors[j], linestyle=linestyle,
+                   label=f'{method} (SNR={snr})', 
+                   linewidth=2, markersize=4, alpha=0.8)
     
-    # Remove empty subplots
-    for i in range(n_plots, len(axes)):
-        fig.delaxes(axes[i])
-    
-    # Add common labels
-    fig.text(0.5, 0.02, 'Degrees of Freedom', ha='center', fontsize=11)
-    fig.text(0.02, 0.5, 'MSE', va='center', rotation=90, fontsize=11)
-    
-    if n_plots > 0:
-        axes[0].legend(frameon=False, fontsize=8, loc='upper right')
+    ax.set_xlabel('Degrees of Freedom')
+    ax.set_ylabel('MSE')
+    ax.set_title('MSE vs Degrees of Freedom by SNR')
+    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    ax.grid(True, alpha=0.3)
     
     plt.tight_layout()
-    plt.subplots_adjust(bottom=0.12, left=0.1)
-    
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.show()
 
 def plot_small_multiples_aspect_ratio(df, save_path=None):
-    """Small multiples: MSE vs df by aspect ratio (n/p)"""
+    """Simple plot: MSE vs df by aspect ratio (different markers)"""
     df = df.copy()
     df['aspect_ratio'] = df['n'] / df['p']
-    
-    # Round aspect ratios for cleaner grouping
     df['ar_rounded'] = np.round(df['aspect_ratio'], 1)
+    
+    fig, ax = plt.subplots(figsize=(8, 5))
+    
     ar_values = sorted(df['ar_rounded'].unique())
-    
-    n_plots = len(ar_values)
-    ncols = min(3, n_plots)
-    nrows = (n_plots + ncols - 1) // ncols
-    
-    fig, axes = plt.subplots(nrows, ncols, figsize=(ncols*2, nrows*2),
-                            sharey=True, sharex=True)
-    if n_plots == 1:
-        axes = [axes]
-    elif nrows == 1:
-        axes = axes.flatten()
-    else:
-        axes = axes.flatten()
-    
     methods = df['method'].unique()
     colors = sns.color_palette("husl", len(methods))
+    markers = ['o', 's', '^', 'D']  # Different markers for aspect ratios
     
     for i, ar in enumerate(ar_values):
-        if i >= len(axes):
-            break
-            
-        ax = axes[i]
         subset = df[df['ar_rounded'] == ar]
         grouped = subset.groupby(['method', 'df'])['mse'].mean().reset_index()
         
         for j, method in enumerate(methods):
             data = grouped[grouped['method'] == method]
-            ax.plot(data['df'], data['mse'], 'o-', 
-                   color=colors[j], label=method if i == 0 else "", 
-                   linewidth=1.5, markersize=3)
-        
-        ax.set_title(f'n/p = {ar}', fontsize=10)
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.grid(True, alpha=0.3, linewidth=0.5)
+            marker = markers[i % len(markers)]
+            ax.plot(data['df'], data['mse'], marker=marker, linestyle='-',
+                   color=colors[j], 
+                   label=f'{method} (n/p={ar})', 
+                   linewidth=2, markersize=6, alpha=0.8)
     
-    # Remove empty subplots
-    for i in range(n_plots, len(axes)):
-        fig.delaxes(axes[i])
-    
-    # Add common labels
-    fig.text(0.5, 0.02, 'Degrees of Freedom', ha='center', fontsize=11)
-    fig.text(0.02, 0.5, 'MSE', va='center', rotation=90, fontsize=11)
-    
-    if n_plots > 0:
-        axes[0].legend(frameon=False, fontsize=8, loc='upper right')
+    ax.set_xlabel('Degrees of Freedom')
+    ax.set_ylabel('MSE')
+    ax.set_title('MSE vs Degrees of Freedom by Aspect Ratio')
+    ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    ax.grid(True, alpha=0.3)
     
     plt.tight_layout()
-    plt.subplots_adjust(bottom=0.12, left=0.1)
-    
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
     plt.show()
 
-def create_all_plots(csv_path, output_dir=None):
+def create_all_plots(csv_path, output_dir='figures'):
     """Create all plots from CSV file"""
     df = load_results(csv_path)
     
     print(f"Loaded {len(df)} simulation results")
     print(f"Methods: {', '.join(df['method'].unique())}")
+    
+    # Create output directory if it doesn't exist
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
     
     # Main plot
     save_path = f"{output_dir}/mse_vs_df.png" if output_dir else None
@@ -257,7 +210,7 @@ def create_example_data(n_simulations=500, save_csv=True, csv_filename='example_
     
     return df
 
-def run_complete_analysis(csv_path=None, output_dir=None, create_example=False):
+def run_complete_analysis(csv_path=None, output_dir='figures', create_example=False):
     """
     Run complete simulation analysis with all plots
     
@@ -310,7 +263,7 @@ def run_complete_analysis(csv_path=None, output_dir=None, create_example=False):
 # Example usage
 if __name__ == "__main__":
     # Run complete analysis with example data
-    df = run_complete_analysis(create_example=True)
+    # df = run_complete_analysis(create_example=True)
     
     # Or run with your own CSV file:
-    # df = run_complete_analysis('your_simulation_results.csv', output_dir='plots')
+    df = run_complete_analysis('artifacts/full_simulation_results.csv')

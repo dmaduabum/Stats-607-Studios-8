@@ -1,3 +1,30 @@
-all code is stored in the src folder. the simulation file stores csv's of the simulated data in data/. the regression files read this data and store true and estimated beta in the artifacts folder. these are read by the files that calculate the MSE and produce visuals stored in the figures/ folder.
+# Stats 607 Studios 7 - Regression Methods Simulation
+# Group Memebers
+# Jingyuan Yang 
+## Quick Start
 
-simulation results should follow this format: each row contains `method`, `n`, `p`, `df`, `rho`, `SNR`, `rep`, `mse` columns for evaluation and plotting.
+Navigate to project root and run:
+```bash
+cd Stats-607-Studios-7
+python src/run_simulation.py
+```
+
+This will:
+1. Generate simulation data comparing OLS, LAD, and Huber regression
+2. Save results to `artifacts/full_simulation_results.csv`
+3. Create visualizations in `figures/` folder
+
+## File Structure
+
+- `src/` - All source code
+  - `run_simulation.py` - Main simulation runner
+  - `generate_data.py` - Data generation with various noise distributions
+  - `huber_reg.py` - Regression method implementations
+  - `evaluation.py` - MSE calculation and plotting functions
+
+- `artifacts/` - Simulation results (CSV files with MSE data)
+- `figures/` - Generated plots and visualizations
+
+## Data Format
+
+Simulation results CSV contains: `method`, `n`, `p`, `df`, `rho`, `SNR`, `rep`, `mse`
