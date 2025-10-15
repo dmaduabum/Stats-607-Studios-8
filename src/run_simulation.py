@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 # Import from existing modules
 from generate_data import simulate_dataset
-from huber_reg import lin_regression, huber_regression, quantile_regression
+from run_reg import lin_regression, huber_regression, quantile_regression
 
 
 def calculate_mse(beta_hat, beta_true):
