@@ -1,8 +1,8 @@
 # Stats 607 Studios 7 - Regression Methods Simulation
 
 # Group Members
-Jingyuan Yang 
-Chandler Nielsen
+Jingyuan Yang <br>
+Chandler Nielsen <br>
 Abhiti Mishra
 
 ## Quick Start
