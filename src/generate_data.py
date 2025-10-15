@@ -14,8 +14,9 @@ def sample_X(n, p, rho, rng):
     """
 
     Sigma = ar1_cov(p, rho)
+    L = np.linalg.cholesky(Sigma)
     normal_mat = rng.standard_normal(size = (n, p))
-    return normal_mat @ Sigma.T
+    return normal_mat @ L.T
 
 def make_beta(p, rng):
     """
