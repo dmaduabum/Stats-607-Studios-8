@@ -15,7 +15,7 @@ python src/run_simulation.py
 ```
 
 This will:
-1. Generate simulation data comparing OLS, LAD, and Huber regression
+1. Generate simulated data, conduct OLS, LAD, and Huber regression, and compare the results.
 2. Save results to `artifacts/full_simulation_results.csv`
 3. Create visualizations in `figures/` folder
 
