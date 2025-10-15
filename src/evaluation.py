@@ -56,7 +56,7 @@ def plot_small_multiples_snr(df, save_path=None):
         for j, method in enumerate(methods):
             data = grouped[grouped['method'] == method]
             linestyle = ['-', '--', '-.'][i % 3]  # Different line styles for SNR
-            ax.plot(data['df'], data['mse'], 'o-', 
+            ax.plot(data['df'], data['mse'], 'o', 
                    color=colors[j], linestyle=linestyle,
                    label=f'{method} (SNR={snr})', 
                    linewidth=2, markersize=4, alpha=0.8)
