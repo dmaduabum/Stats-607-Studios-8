@@ -24,7 +24,7 @@ This will:
 - `src/` - All source code
   - `run_simulation.py` - Main simulation runner
   - `generate_data.py` - Data generation with various noise distributions
-  - `huber_reg.py` - Regression method implementations
+  - `run_reg.py` - Regression method implementations
   - `evaluation.py` - MSE calculation and plotting functions
 
 - `artifacts/` - Simulation results (CSV files with MSE data)
