@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
+import pickle
 from tqdm import tqdm
 from run_simulation import run_simulation_study
 
@@ -24,6 +25,9 @@ def run_full_simulation(output_file='artifacts/full_simulation_results.csv'):
 
 
 if __name__ == "__main__":
+
+    with open('your_file_name.pkl', 'rb') as file:
+        loaded_data = pickle.load(file)
     # Run the simulation study
     print("Running simulation study...")
     df = run_full_simulation()
