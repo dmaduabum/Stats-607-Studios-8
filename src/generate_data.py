@@ -26,7 +26,7 @@ def sample_errors(n, sigma, rng):
     return err
 
 
-def simulate_dataset(n, gamma, seed = None):
+def simulate_dataset(n=200, gamma, seed = None):
 
     if seed is None:
         rng = np.random.default_rng(82803)
