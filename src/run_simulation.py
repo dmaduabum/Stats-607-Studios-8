@@ -15,12 +15,12 @@ from tqdm import tqdm
 
 # Import from existing modules
 from generate_data import simulate_dataset
-from run_reg import lin_regression, huber_regression, quantile_regression
+from run_reg import lin_regression, huber_regression, quantile_regression, calculate_mse
 
 
-def calculate_mse(beta_hat, beta_true):
-    """Calculate Mean Squared Error between estimated and true coefficients"""
-    return np.sum((beta_hat - beta_true) ** 2)
+# def calculate_mse(beta_hat, beta_true):
+#     """Calculate Mean Squared Error between estimated and true coefficients"""
+#     return np.sum((beta_hat - beta_true) ** 2)
 
 
 def run_single_simulation(n, gamma, rho, df, snr, method, rep_id, seed=None):
